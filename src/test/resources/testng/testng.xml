@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="ExampleTest tests">
+    <test name="examples/example test">
+        <packages>
+            <package name="com.stormnet.tests.functionalities.*"/>
+        </packages>
+    </test>
+</suite>

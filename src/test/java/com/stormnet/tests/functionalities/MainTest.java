@@ -9,12 +9,12 @@ import pageWrappers.yandex_com.pageWrappers.loginPage.LoginPageActions;
 import pageWrappers.yandex_com.pageWrappers.mailPage.MailPageActions;
 import pageWrappers.yandex_com.pageWrappers.mainPage.MainPageActions;
 
-public class LoginTest extends BaseTest {
+public class MainTest extends BaseTest {
 
 	@Test(description = "Main test")
 	public void mainTest() {
 		// Preconditions
-		UiDriver.getDriver().get("https://yandex.ru/");
+		UiDriverActions.goToUrl("https://yandex.ru/");
 		MainPageActions.clickLoginDesk();
 		UiDriverActions.switchToTab(2);
 

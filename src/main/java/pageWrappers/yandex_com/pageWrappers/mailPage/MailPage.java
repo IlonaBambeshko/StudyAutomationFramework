@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import pageWrappers.yandex_com.BasePage;
 
 public class MailPage extends BasePage {
+
+	// Locators:
 	private static final By INBOX_MAIL_LOCATOR = By.xpath("//div[@class='mail-Layout-Inner']//a[@href='#inbox']");
 	private static final By MAIL_BUTTON_LOCATOR = By.cssSelector("a.mail-ComposeButton.js-main-action-compose");
 	private static final By POPUP_TITLE_LOCATOR = By.xpath("//div[@class='ComposePopup-Head']//span[@class='composeHeader-Title']/span");
@@ -17,15 +19,45 @@ public class MailPage extends BasePage {
 	private static final By SEND_BUTTON_LOCATOR = By.xpath("//div[@class='ComposeSendButton-Text']/../../../button");
 	private static final By ATTACHMENT_FIELD_LOCATOR = By.xpath("//div[@class='AttachmentItem__text--24wwt qa-Attachment-fileName']/span");
 	private static final By CHECK_MAILBOX_BUTTON_LOCATOR = By.xpath("//span[@data-click-action='mailbox.check']");
-	private static final By I_FRAME_LOCATOR = By.xpath("(//iframe)[3]");
-	private static final By NON_VISIBLE_ATTACHMENT_AREA = By.xpath("//div[@class='AttachmentItem__attachmentItem--P5Tr2']");
-
-//	add variable to 'ilona_bambeshko@tut.by'
-	private static final By INBOX_MESSAGE_LOCATOR = By.xpath("//div[1][contains(@class, 'ns-view-messages-item-wrap')]//div[@class='mail-MessageSnippet-Content']//span[@title='ilona_bambeshko@tut.by']");
 	private static final By SAVE_ON_DISK_BUTTON_LOCATOR = By.xpath("//button[contains(@class, 'qa-MessageViewer-Attachment-SaveDiskBtn')]");
 	private static final By LOADED_ON_DICK_IFRAME_LOCATOR = By.xpath("//span/span/span[contains(., 'Сохранено на Диск')]");
 	private static final By GO_TO_DISK_BUTTON_LOCATOR = By.xpath("//a//span[@class='button__text']");
+	private static final By FRAME_LOCATOR = By.xpath("//iframe[@class='disk-widget-save']");
 
+	// Patterns:
+	private static final String MODAL_WINDOW_WITH_TEXT_PATTERN = "//div[@class='ComposeConfirmPopup-Title']//span[contains(., '%s')]";
+	private static final String INBOX_MESSAGE_WITH_SUBJECT_PATTERN = "//div[contains(@class, 'ns-view-messages-item-wrap')]//div[@class='mail-MessageSnippet-Content']//span[@title='%s']";
+	private static final String BUTTON_WITH_NAME_PATTERN = "//span[contains(., '%s')]/../../button";
+
+
+	// Methods:
+	private static By inboxMessageWithSubjectLocator(String subject){
+		return By.xpath(String.format(INBOX_MESSAGE_WITH_SUBJECT_PATTERN, subject));
+	}
+
+	private static By modalWindowWithTextLocator(String text){
+		return By.xpath(String.format(MODAL_WINDOW_WITH_TEXT_PATTERN, text));
+	}
+
+	private static By buttonWithNameLocator(String name){
+		return By.xpath(String.format(BUTTON_WITH_NAME_PATTERN, name));
+	}
+
+	public static HtmlElement getFirstInboxMessageWithSubject(String subject) {
+		return new HtmlElement(inboxMessageWithSubjectLocator(subject));
+	}
+
+	public static HtmlElement getModalWindowWithText(String text) {
+		return new HtmlElement(modalWindowWithTextLocator(text));
+	}
+
+	public static Button getButtonWithName(String name) {
+		return new Button(buttonWithNameLocator(name));
+	}
+
+	public static HtmlElement getFrame() {
+		return new HtmlElement(FRAME_LOCATOR);
+	}
 
 	public static HtmlElement getAttachmentField() {
 		return new HtmlElement(ATTACHMENT_FIELD_LOCATOR);
@@ -35,21 +67,11 @@ public class MailPage extends BasePage {
 		return new HtmlElement(INBOX_MAIL_LOCATOR);
 	}
 
-	public static HtmlElement getNonVisibleAttachmentArea() {
-		return new HtmlElement(NON_VISIBLE_ATTACHMENT_AREA);
-	}
-
 	public static HtmlElement getLoadedOnDiskIFrame() {
 		return new HtmlElement(LOADED_ON_DICK_IFRAME_LOCATOR);
 	}
 
-	public static HtmlElement getIFrame() {
-		return new HtmlElement(I_FRAME_LOCATOR);
-	}
-
-	public static HtmlElement getFirstInboxMessage() {
-		return new HtmlElement(INBOX_MESSAGE_LOCATOR);
-	}
+	public static HtmlElement getPopupTitle() { return new HtmlElement(POPUP_TITLE_LOCATOR); }
 
 	public static Button getMailButton(){ return new Button(MAIL_BUTTON_LOCATOR); }
 
@@ -60,8 +82,6 @@ public class MailPage extends BasePage {
 	public static Button getSaveOnDiskButton(){ return new Button(SAVE_ON_DISK_BUTTON_LOCATOR); }
 
 	public static Button getCheckMailboxButton(){ return new Button(CHECK_MAILBOX_BUTTON_LOCATOR); }
-
-	public static HtmlElement getPopupTitle() { return new HtmlElement(POPUP_TITLE_LOCATOR); }
 
 	public static Input getToField() { return new Input(TO_FIELD_LOCATOR); }
 

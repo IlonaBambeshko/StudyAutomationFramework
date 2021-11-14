@@ -3,31 +3,33 @@ package pageWrappers.yandex_com.pageWrappers.diskPage;
 import common.main.actionsBuilder.ActionsBuilder;
 import common.main.waiter.Waiter;
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriverException;
 import org.testng.Assert;
 import pageWrappers.yandex_com.BasePageActions;
 
 public class DiskPageActions extends BasePageActions {
 
 	@Step("Move item from Downloads to Files")
-	public static void moveItemToFiles(){
+	public static void moveItemToFilesFolder(String fileNameWithExtension){
 		Waiter.waitUntilVisible(DiskPage.getLoadedItem(), "Loaded item is not displayed");
-		Assert.assertTrue(DiskPage.getLoadedItem().getElement().getText().contains("fiile_to_attach"));
-		ActionsBuilder.rightClick(DiskPage.getFirstFileInDownloads().getElement());
+		Assert.assertTrue(DiskPage.getLoadedItem().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")));
+		ActionsBuilder.rightClick(DiskPage.getFileInDownloads(fileNameWithExtension.replace(".txt", "")).getElement());
 		chooseMoveInContextMenu();
 		clickMoveButtonOnModalWindow();
-		Waiter.waitWithDurationOfMilliseconds(2000);
+		Waiter.waitLongUntilVisible(DiskPage.getNotificationAboutMovedFile(fileNameWithExtension), "File hasn't been replaced");
 	}
 
 	@Step("Move item from Files to Basket")
-	public static void moveItemToBasket(){
-		Waiter.waitUntilVisible(DiskPage.getFilesInNavigationMenu(), "Files section in left menu is not displayed");
+	public static void moveItemToBasket(String fileNameWithExtension){
 		DiskPage.getFilesInNavigationMenu().click();
-		Waiter.waitWithDurationOfMilliseconds(2000);
-		ActionsBuilder.dragAndDropAction(DiskPage.getItemInBasket().getElement(), DiskPage.getBasket().getElement());
-		Waiter.waitWithDurationOfMilliseconds(2000);
+		Waiter.waitUntilVisible((DiskPage.getItemInBasket(
+				fileNameWithExtension.replace(".txt", ""))), "Element is nor displayed");
+		ActionsBuilder.dragAndDropAction(
+				DiskPage.getItemInBasket(fileNameWithExtension.replace(".txt", "")).getElement(),
+				DiskPage.getBasket().getElement());
+		Waiter.waitLongUntilVisible(DiskPage.getNotificationAboutMovedFile(
+				fileNameWithExtension), "File hasn't been deleted");
 		ActionsBuilder.doubleClick(DiskPage.getBasket().getElement());
-		Waiter.waitWithDurationOfMilliseconds(2000);
-		Waiter.waitUntilVisible(DiskPage.getItemInBasket(), "Deleted item is not displayed");
 	}
 
 	@Step("Choose 'Move' in context menu")
@@ -38,7 +40,22 @@ public class DiskPageActions extends BasePageActions {
 
 	@Step("Click 'Move' button on the modal window")
 	public static void clickMoveButtonOnModalWindow(){
-		Waiter.waitUntilVisible(DiskPage.getMoveButtonOnModalWindow(), "Loaded item is not displayed");
-		DiskPage.getMoveButtonOnModalWindow().click();
+		boolean notClickableElement = true;
+		int attempts = 5;
+		while ((notClickableElement) && (attempts > 0)){
+			try {
+				Waiter.waitUntilVisible(DiskPage.getMoveButtonOnModalWindow(), "Loaded item is not displayed");
+				DiskPage.getMoveButtonOnModalWindow().click();
+				notClickableElement = false;
+			} catch (WebDriverException e) {
+				attempts -= 1;
+			}
+		}
+	}
+
+	@Step("Check item in Basket")
+	public static void checkItemInBasket(String fileNameWithExtension){
+		Waiter.waitLongUntilVisible(DiskPage.getItemInBasket(
+				fileNameWithExtension.replace(".txt", "")), "Deleted item is not displayed");
 	}
 }

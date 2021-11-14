@@ -1,5 +1,6 @@
 package pageWrappers.yandex_com.pageWrappers.mailPage;
 
+import common.main.driver.UiDriverActions;
 import common.main.javascriptExecutor.CustomJavascriptExecutor;
 import common.main.waiter.Waiter;
 import io.qameta.allure.Step;
@@ -11,10 +12,16 @@ import static pageWrappers.yandex_com.pageWrappers.mailPage.MailPage.getPopupTit
 public class MailPageActions extends BasePageActions {
 
 	@Step("Create new message with attachment {3} and send to {0}")
-	public static void sendNewMessageWithAttachment(String getterEmail, String subject, String text, String attachmentPath) {
+	public static void sendNewMessageWithParams(String getterEmail, String subject, String text, String attachmentPath) {
 		clickMailButton();
 		fillAllFieldsForNewLetter(getterEmail, subject, text, attachmentPath);
 		clickSendButton();
+		if (MailPage.getModalWindowWithText("Письмо не отправлено").isDisplayed()) {
+			Waiter.waitUntilVisible(MailPage.getButtonWithName("Вернуться к письму"),
+					"Button Вернуться к письму is not displayed");
+			MailPage.getButtonWithName("Вернуться к письму").click();
+			clickSendButton();
+		}
 		Waiter.waitUntilVisible(MailPage.getInboxMail(), "Inbox mail is not displayed");
 	}
 
@@ -26,6 +33,21 @@ public class MailPageActions extends BasePageActions {
 	public static void clickSendButton() {
 		Waiter.waitUntilVisible(MailPage.getSendButton(), "Send button is not displayed");
 		MailPage.getSendButton().click();
+	}
+
+	@Step("Check new message in inbox mail")
+	public static void checkMessageWithSubjectReceivedInInboxMail(String subject) {
+		Waiter.waitLongUntilVisible(MailPage.getCheckMailboxButton(), "Check mailbox button is not displayed");
+		int attempts = 5;
+		boolean messageNotDisplayed = true;
+		do {
+			MailPage.getCheckMailboxButton().click();
+			Waiter.waitLongUntilVisible(MailPage.getCheckMailboxButton(), "Check mailbox button is not displayed");
+			attempts -= 1;
+			if (MailPage.getFirstInboxMessageWithSubject("test subject").isDisplayed()) {
+				messageNotDisplayed = false;
+			}
+		} while (messageNotDisplayed && (attempts > 0));
 	}
 
 	@Step("Fill necessary fields for the message")
@@ -40,30 +62,24 @@ public class MailPageActions extends BasePageActions {
 		Assert.assertEquals(MailPage.getAttachmentField().getElement().getText().contains("fiile_to_attach"), true);
 	}
 
-	@Step("Check new message in inbox mail")
-	public static void checkMessageInInboxMail() {
-		Waiter.waitLongUntilVisible(MailPage.getCheckMailboxButton(), "Check mailbox button is not displayed");
-		do {
-			MailPage.getCheckMailboxButton().click();
-			Waiter.waitWithDurationOfMilliseconds(4000);
-		} while (!MailPage.getFirstInboxMessage().isDisplayed());
-	}
-
 	@Step("Move attachment from mail to disk")
-	public static void moveAttachmentFromMailToDisk() {
-		MailPage.getFirstInboxMessage().click();
+	public static void moveAttachmentFromMailToDisk(String fileNameWithExtension) {
+		BasePageActions.clickOnElement(MailPage.getFirstInboxMessageWithSubject("test subject").getElement());
 		Waiter.waitLongUntilVisible(MailPage.getAttachmentField(), "Attachment field is not displayed");
+		Assert.assertEquals(MailPage.getAttachmentField().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")), true);
 		CustomJavascriptExecutor.executeClick(MailPage.getSaveOnDiskButton().getElement());
-		Waiter.waitWithDurationOfMilliseconds(4000);
 	}
 
 	@Step("Check that File is saved on Disk")
-	public static void checkFileIsSavedOnDisk() {
+	public static void checkMessageOnFrameSavedOnDisk() {
+		Waiter.waitFrameToBeAvailableAndSwitch(MailPage.getFrame(), "Frame is not available");
 		Waiter.waitLongUntilVisible(MailPage.getLoadedOnDiskIFrame(), "File is not saved on Disk");
+		MailPageActions.goToDisk();
+		UiDriverActions.switchToTab(3);
 	}
 
 	@Step("Click 'go to Disk' button")
-	public static void moveToDisk() {
+	public static void goToDisk() {
 		Waiter.waitLongUntilVisible(MailPage.getGoToDiskButton(), "Button to go to Disk is not displayed");
 		MailPage.getGoToDiskButton().click();
 	}

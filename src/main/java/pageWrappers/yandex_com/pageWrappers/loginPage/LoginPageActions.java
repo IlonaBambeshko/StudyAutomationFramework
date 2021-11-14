@@ -4,6 +4,7 @@ import common.main.waiter.Waiter;
 import io.qameta.allure.Step;
 import pageWrappers.yandex_com.BasePageActions;
 import pageWrappers.yandex_com.pageWrappers.mailPage.MailPage;
+import utility.logerator.Logger;
 
 public class LoginPageActions extends BasePageActions {
 	@Step("Fill username in form for login and submit")
@@ -27,8 +28,10 @@ public class LoginPageActions extends BasePageActions {
 
 	@Step("Log in the mail with credentials {0}/{1}")
 	public static void loginWithCreds(String userName, String password) {
+		Logger.getLogger().info("Try to login as {}/{}", userName, password);
 		fillUsername(userName);
 		fillPassword(password);
 		Waiter.waitLongUntilVisible(MailPage.getInboxMail(), "Inbox mail is not displayed");
+		Logger.getLogger().info("Logged in as {}/{}", userName, password);
 	}
 }

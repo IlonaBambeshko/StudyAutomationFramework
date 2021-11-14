@@ -6,10 +6,13 @@ import org.openqa.selenium.By;
 import pageWrappers.yandex_com.BasePage;
 
 public class LoginPage extends BasePage {
+
+	// Locators:
 	private static final By USERNAME_FIELD_LOCATOR = By.id("passp-field-login");
 	private static final By PASSWORD_FIELD_LOCATOR = By.id("passp-field-passwd");
 	private static final By SIGN_IN_BUTTON_LOCATOR = By.id("passp:sign-in");
 
+	// Methods:
 	public static Input getUserNameField() {
 		return new Input(USERNAME_FIELD_LOCATOR);
 	}

@@ -1,7 +1,6 @@
 package com.stormnet.tests.functionalities;
 
 import com.stormnet.tests.BaseTest;
-import common.main.driver.UiDriver;
 import common.main.driver.UiDriverActions;
 import org.testng.annotations.Test;
 import pageWrappers.yandex_com.pageWrappers.diskPage.DiskPageActions;
@@ -14,25 +13,27 @@ public class MainTest extends BaseTest {
 	@Test(description = "Main test")
 	public void mainTest() {
 		// Preconditions
+		//todo property file, доставать с помощью getProperty baseUrl, property manager
 		UiDriverActions.goToUrl("https://yandex.ru/");
 		MainPageActions.clickLoginDesk();
-		UiDriverActions.switchToTab(2);
 
 		// Test
 		// Login Page
-		LoginPageActions.loginWithCreds("ilona_bambeshko@tut.by", "gjgf1823qwerty");
+		LoginPageActions.loginWithCreds("ilona_bambeshko@tut.by", "WsA32BV1ff"); // TODO: 12.11.21 выносить в json file test data manager
 
 		// Mail Page
-		MailPageActions.sendNewMessageWithAttachment("ilona_bambeshko@tut.by", "test subject", "test text", "/home/user/fiile_to_attach.txt");
-		MailPageActions.checkMessageInInboxMail();
-		MailPageActions.moveAttachmentFromMailToDisk();
-		UiDriverActions.switchToFrame(3);
-		MailPageActions.checkFileIsSavedOnDisk();
-		MailPageActions.moveToDisk();
-		UiDriverActions.switchToTab(3);
+		MailPageActions.sendNewMessageWithParams(
+				"ilona_bambeshko@tut.by",
+				"test subject",
+				"test text",
+				"/home/user/fiile_to_attach.txt");
+		MailPageActions.checkMessageWithSubjectReceivedInInboxMail("test subject");
+		MailPageActions.moveAttachmentFromMailToDisk("fiile_to_attach.txt");
+		MailPageActions.checkMessageOnFrameSavedOnDisk();
 
 		// Disk Page
-		DiskPageActions.moveItemToFiles();
-		DiskPageActions.moveItemToBasket();
+		DiskPageActions.moveItemToFilesFolder("fiile_to_attach.txt");
+		DiskPageActions.moveItemToBasket("fiile_to_attach.txt");
+		DiskPageActions.checkItemInBasket("fiile_to_attach.txt");
 	}
 }

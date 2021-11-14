@@ -2,6 +2,7 @@ package common.main.waiter;
 
 import common.main.driver.UiDriver;
 import common.main.elements.HtmlElement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -12,7 +13,7 @@ import java.time.Duration;
 
 public class Waiter {
 	private static int defaultWaitTimeInSeconds = 10;
-	private static int longWaitTimeInSeconds = 15;
+	private static int longWaitTimeInSeconds = 20;
 
 	public Waiter(int defaultTimeout, int longTimeout) {
 		defaultWaitTimeInSeconds = defaultTimeout;
@@ -34,6 +35,18 @@ public class Waiter {
 				.until(ExpectedConditions.visibilityOfElementLocated(element.getLocator()));
 	}
 
+	public static void waitUntilClickable(HtmlElement element, String message){
+		new WebDriverWait(UiDriver.getDriver(), Duration.ofSeconds(defaultWaitTimeInSeconds))
+				.withMessage(message)
+				.until(ExpectedConditions.elementToBeClickable(element.getLocator()));
+	}
+
+	public static void waitFrameToBeAvailableAndSwitch(HtmlElement element, String message){
+		new WebDriverWait(UiDriver.getDriver(), Duration.ofSeconds(defaultWaitTimeInSeconds))
+				.withMessage(message)
+				.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(element.getLocator()));
+	}
+
 	public static void waitWithDurationOfMilliseconds(int milliseconds){
 		try {
 			Thread.sleep(milliseconds);
@@ -51,9 +64,5 @@ public class Waiter {
 		return element;
 	}
 
-	public static void fluentWait(int seconds){
-		FluentWait wait = new FluentWait(UiDriver.getDriver());
-		wait.withTimeout(Duration.ofSeconds(seconds));
 
-	}
 }

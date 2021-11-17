@@ -12,7 +12,7 @@ public abstract class BasePageActions {
 			try{
 				element.click();
 				staleElement = false;
-			} catch (StaleElementReferenceException e){
+			} catch (StaleElementReferenceException | NullPointerException e){
 				attempts -= 1;
 			}
 		}

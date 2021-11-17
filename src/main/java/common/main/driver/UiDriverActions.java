@@ -1,12 +1,9 @@
 package common.main.driver;
 
-import common.main.elements.HtmlElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import utility.logerator.Logger;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UiDriverActions {
 	public static void goToUrl(String url) {
@@ -27,16 +24,16 @@ public class UiDriverActions {
 		UiDriver.getDriver().navigate().refresh();
 	}
 
-	public static void switchToTab(int tabNumber) {
-		ArrayList<String> tabs = new ArrayList(UiDriver.getDriver().getWindowHandles());
-		// TODO: 12.11.21 до 2 вкладок получить сет на текущ вкладку, потом открыть 2 вкл, получить нов сет и потом вычесть и определить номер нов вкладки
-		Logger.getLogger().info("Switching to {} tab", tabNumber - 1);
-		UiDriver.getDriver().switchTo().window(tabs.get(tabNumber - 1));
+	public static void switchToTheNextTab(Set previousTabs) {
+		Logger.getLogger().info("Switching to {} tab");
+		Set newTabs = UiDriverActions.getCurrentTabs();
+		newTabs.removeAll(previousTabs);
+		UiDriver.getDriver().switchTo().window(newTabs.stream().findFirst().get().toString());
 	}
 
-	public static void switchToFrame(int frameNumber) {
-		Logger.getLogger().info("Switching to {} frame", frameNumber);
-		UiDriver.getDriver().switchTo().frame(frameNumber);
+	public static Set getCurrentTabs(){
+//		Set<String> currentTabs = new HashSet<>(UiDriver.getDriver().getWindowHandles());
+		return new HashSet<>(UiDriver.getDriver().getWindowHandles());
 	}
 
 }

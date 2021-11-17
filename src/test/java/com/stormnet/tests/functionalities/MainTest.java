@@ -7,33 +7,41 @@ import pageWrappers.yandex_com.pageWrappers.diskPage.DiskPageActions;
 import pageWrappers.yandex_com.pageWrappers.loginPage.LoginPageActions;
 import pageWrappers.yandex_com.pageWrappers.mailPage.MailPageActions;
 import pageWrappers.yandex_com.pageWrappers.mainPage.MainPageActions;
+import utility.dataManager.DataManager;
+
+import java.util.Properties;
 
 public class MainTest extends BaseTest {
 
 	@Test(description = "Main test")
 	public void mainTest() {
 		// Preconditions
-		//todo property file, доставать с помощью getProperty baseUrl, property manager
-		UiDriverActions.goToUrl("https://yandex.ru/");
-		MainPageActions.clickLoginDesk();
+		// Get test data from properties:
+		Properties propertyForTest = DataManager.getPropertyForTest();
+		String fileName = propertyForTest.getProperty("Maintest.filePath").replace("/home/user/StudyAutomationFramework/", "");
+		UiDriverActions.goToUrl(propertyForTest.getProperty("Maintest.url"));
 
 		// Test
+		// Main Page
+		MainPageActions.clickLoginDesk();
+
 		// Login Page
-		LoginPageActions.loginWithCreds("ilona_bambeshko@tut.by", "WsA32BV1ff"); // TODO: 12.11.21 выносить в json file test data manager
+		LoginPageActions.loginWithCreds
+				(propertyForTest.getProperty("Maintest.userLogin"), propertyForTest.getProperty("Maintest.password"));
 
 		// Mail Page
 		MailPageActions.sendNewMessageWithParams(
-				"ilona_bambeshko@tut.by",
-				"test subject",
-				"test text",
-				"/home/user/fiile_to_attach.txt");
-		MailPageActions.checkMessageWithSubjectReceivedInInboxMail("test subject");
-		MailPageActions.moveAttachmentFromMailToDisk("fiile_to_attach.txt");
+				propertyForTest.getProperty("Maintest.getterEmail"),
+				propertyForTest.getProperty("Maintest.subject"),
+				propertyForTest.getProperty("Maintest.text"),
+				propertyForTest.getProperty("Maintest.filePath"), fileName);
+		MailPageActions.checkMessageWithSubjectReceivedInInboxMail(propertyForTest.getProperty("Maintest.subject"));
+		MailPageActions.moveAttachmentFromMailToDisk(fileName);
 		MailPageActions.checkMessageOnFrameSavedOnDisk();
 
 		// Disk Page
-		DiskPageActions.moveItemToFilesFolder("fiile_to_attach.txt");
-		DiskPageActions.moveItemToBasket("fiile_to_attach.txt");
-		DiskPageActions.checkItemInBasket("fiile_to_attach.txt");
+		DiskPageActions.moveItemToFilesFolder(fileName);
+		DiskPageActions.moveItemToBasket(fileName);
+		DiskPageActions.checkItemInBasket(fileName);
 	}
 }

@@ -16,8 +16,7 @@ public class DiskPage extends BasePage {
 	// Patterns:
 	private static final String FILE_IN_DOWNLOADS_PATTERN = "//div/div[@class='listing-item__info']//span[contains(., '%s')]";
 	private static final String NOTIFICATION_ABOUT_MOVED_FILE_PATTERN = "//div[@class='notifications__text js-message'][contains(., 'Файл «\"%s\"» перемещен')] | //div[@class='notifications__text js-message'][contains(., 'Файл «\"%s\"» перемещён')]";
-	private static final String FILE_IN_BASKET_PATTERN = "//span[contains(@title, '%s')]/../../../div[1]";
-
+	private static final String FILE_IN_BASKET_PATTERN = "//span[contains(., '%s')]/../../../div[contains(@class, 'listing-item__icon')]";
 	// Methods:
 	private static By notificationAboutMovedFileLocator(String fileName){
 		String fullPass = NOTIFICATION_ABOUT_MOVED_FILE_PATTERN.replace("%s", fileName).replace("\"", "");

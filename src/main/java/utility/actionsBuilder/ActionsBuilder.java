@@ -1,4 +1,4 @@
-package common.main.actionsBuilder;
+package utility.actionsBuilder;
 
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -41,7 +41,11 @@ public class ActionsBuilder {
 	}
 
 	public static void dragAndDropAction(WebElement targetElement, WebElement toElement) {
-		getActionsBuilder().dragAndDrop(targetElement, toElement);
+		getActionsBuilder().clickAndHold(targetElement)
+				.moveToElement(toElement)
+				.release(toElement)
+				.build()
+				.perform();
 	}
 
 	public static void doubleClick(WebElement targetElement){

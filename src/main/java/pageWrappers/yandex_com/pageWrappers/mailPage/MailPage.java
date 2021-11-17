@@ -23,6 +23,7 @@ public class MailPage extends BasePage {
 	private static final By LOADED_ON_DICK_IFRAME_LOCATOR = By.xpath("//span/span/span[contains(., 'Сохранено на Диск')]");
 	private static final By GO_TO_DISK_BUTTON_LOCATOR = By.xpath("//a//span[@class='button__text']");
 	private static final By FRAME_LOCATOR = By.xpath("//iframe[@class='disk-widget-save']");
+	private static final By MESSAGE_SENT_LOCATOR = By.xpath("//div[@class='mail-StatuslineProgress_Message']/span[contains(., 'Письмо отправлено')]");
 
 	// Patterns:
 	private static final String MODAL_WINDOW_WITH_TEXT_PATTERN = "//div[@class='ComposeConfirmPopup-Title']//span[contains(., '%s')]";
@@ -49,6 +50,10 @@ public class MailPage extends BasePage {
 
 	public static HtmlElement getModalWindowWithText(String text) {
 		return new HtmlElement(modalWindowWithTextLocator(text));
+	}
+
+	public static HtmlElement getMessageSentNotification(){
+		return new HtmlElement(MESSAGE_SENT_LOCATOR);
 	}
 
 	public static Button getButtonWithName(String name) {

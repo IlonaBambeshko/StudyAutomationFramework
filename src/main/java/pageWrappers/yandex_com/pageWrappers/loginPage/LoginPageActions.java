@@ -1,6 +1,6 @@
 package pageWrappers.yandex_com.pageWrappers.loginPage;
 
-import common.main.waiter.Waiter;
+import utility.waiter.Waiter;
 import io.qameta.allure.Step;
 import pageWrappers.yandex_com.BasePageActions;
 import pageWrappers.yandex_com.pageWrappers.mailPage.MailPage;

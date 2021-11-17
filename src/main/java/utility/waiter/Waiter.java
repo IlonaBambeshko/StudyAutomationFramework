@@ -1,4 +1,4 @@
-package common.main.waiter;
+package utility.waiter;
 
 import common.main.driver.UiDriver;
 import common.main.elements.HtmlElement;

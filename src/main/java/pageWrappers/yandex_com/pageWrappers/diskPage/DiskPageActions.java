@@ -1,7 +1,7 @@
 package pageWrappers.yandex_com.pageWrappers.diskPage;
 
-import common.main.actionsBuilder.ActionsBuilder;
-import common.main.waiter.Waiter;
+import utility.actionsBuilder.ActionsBuilder;
+import utility.waiter.Waiter;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriverException;
 import org.testng.Assert;
@@ -23,7 +23,7 @@ public class DiskPageActions extends BasePageActions {
 	public static void moveItemToBasket(String fileNameWithExtension){
 		DiskPage.getFilesInNavigationMenu().click();
 		Waiter.waitUntilVisible((DiskPage.getItemInBasket(
-				fileNameWithExtension.replace(".txt", ""))), "Element is nor displayed");
+				fileNameWithExtension.replace(".txt", ""))), "Element is not displayed");
 		ActionsBuilder.dragAndDropAction(
 				DiskPage.getItemInBasket(fileNameWithExtension.replace(".txt", "")).getElement(),
 				DiskPage.getBasket().getElement());

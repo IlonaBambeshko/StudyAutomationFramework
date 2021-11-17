@@ -1,20 +1,22 @@
 package pageWrappers.yandex_com.pageWrappers.mailPage;
 
 import common.main.driver.UiDriverActions;
-import common.main.javascriptExecutor.CustomJavascriptExecutor;
-import common.main.waiter.Waiter;
+import utility.javascriptExecutor.CustomJavascriptExecutor;
+import utility.waiter.Waiter;
 import io.qameta.allure.Step;
 import org.testng.Assert;
 import pageWrappers.yandex_com.BasePageActions;
+
+import java.util.Set;
 
 import static pageWrappers.yandex_com.pageWrappers.mailPage.MailPage.getPopupTitle;
 
 public class MailPageActions extends BasePageActions {
 
 	@Step("Create new message with attachment {3} and send to {0}")
-	public static void sendNewMessageWithParams(String getterEmail, String subject, String text, String attachmentPath) {
+	public static void sendNewMessageWithParams(String getterEmail, String subject, String text, String attachmentPath, String fileName) {
 		clickMailButton();
-		fillAllFieldsForNewLetter(getterEmail, subject, text, attachmentPath);
+		fillAllFieldsForNewLetter(getterEmail, subject, text, attachmentPath, fileName);
 		clickSendButton();
 		if (MailPage.getModalWindowWithText("Письмо не отправлено").isDisplayed()) {
 			Waiter.waitUntilVisible(MailPage.getButtonWithName("Вернуться к письму"),
@@ -22,6 +24,7 @@ public class MailPageActions extends BasePageActions {
 			MailPage.getButtonWithName("Вернуться к письму").click();
 			clickSendButton();
 		}
+		Waiter.waitLongUntilVisible(MailPage.getMessageSentNotification(), "Message about successful sending is not displayed");
 		Waiter.waitUntilVisible(MailPage.getInboxMail(), "Inbox mail is not displayed");
 	}
 
@@ -51,7 +54,7 @@ public class MailPageActions extends BasePageActions {
 	}
 
 	@Step("Fill necessary fields for the message")
-	public static void fillAllFieldsForNewLetter(String getterEmail, String subject, String text, String attachmentPath) {
+	public static void fillAllFieldsForNewLetter(String getterEmail, String subject, String text, String attachmentPath, String fileNameWithExtension) {
 		Waiter.waitUntilVisible(MailPage.getToField(), "Send button is not displayed");
 		Assert.assertEquals(getPopupTitle().getElement().getText(), "Новое письмо");
 		MailPage.getToField().sendKeys(getterEmail);
@@ -59,13 +62,16 @@ public class MailPageActions extends BasePageActions {
 		MailPage.getTextBox().sendKeys(text);
 		MailPage.getInputFile().sendKeys(attachmentPath);
 		Waiter.waitUntilVisible(MailPage.getAttachmentField(), "Attachment field is not displayed");
-		Assert.assertEquals(MailPage.getAttachmentField().getElement().getText().contains("fiile_to_attach"), true);
+		Assert.assertEquals(MailPage.getAttachmentField().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")), true);
 	}
 
 	@Step("Move attachment from mail to disk")
 	public static void moveAttachmentFromMailToDisk(String fileNameWithExtension) {
 		BasePageActions.clickOnElement(MailPage.getFirstInboxMessageWithSubject("test subject").getElement());
-		Waiter.waitLongUntilVisible(MailPage.getAttachmentField(), "Attachment field is not displayed");
+		if (!MailPage.getAttachmentField().isDisplayed()){
+			BasePageActions.clickOnElement(MailPage.getFirstInboxMessageWithSubject("test subject").getElement());
+			Waiter.waitLongUntilVisible(MailPage.getAttachmentField(), "Attachment field is not displayed");
+		}
 		Assert.assertEquals(MailPage.getAttachmentField().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")), true);
 		CustomJavascriptExecutor.executeClick(MailPage.getSaveOnDiskButton().getElement());
 	}
@@ -74,8 +80,10 @@ public class MailPageActions extends BasePageActions {
 	public static void checkMessageOnFrameSavedOnDisk() {
 		Waiter.waitFrameToBeAvailableAndSwitch(MailPage.getFrame(), "Frame is not available");
 		Waiter.waitLongUntilVisible(MailPage.getLoadedOnDiskIFrame(), "File is not saved on Disk");
+		Set currentTabs = UiDriverActions.getCurrentTabs();
 		MailPageActions.goToDisk();
-		UiDriverActions.switchToTab(3);
+		UiDriverActions.switchToTheNextTab(currentTabs);
+
 	}
 
 	@Step("Click 'go to Disk' button")

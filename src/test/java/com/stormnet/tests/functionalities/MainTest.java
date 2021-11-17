@@ -34,7 +34,8 @@ public class MainTest extends BaseTest {
 				propertyForTest.getProperty("Maintest.getterEmail"),
 				propertyForTest.getProperty("Maintest.subject"),
 				propertyForTest.getProperty("Maintest.text"),
-				propertyForTest.getProperty("Maintest.filePath"), fileName);
+				propertyForTest.getProperty("Maintest.filePath"),
+				fileName);
 		MailPageActions.checkMessageWithSubjectReceivedInInboxMail(propertyForTest.getProperty("Maintest.subject"));
 		MailPageActions.moveAttachmentFromMailToDisk(fileName);
 		MailPageActions.checkMessageOnFrameSavedOnDisk();

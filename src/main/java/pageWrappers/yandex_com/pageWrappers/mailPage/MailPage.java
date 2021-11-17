@@ -32,15 +32,15 @@ public class MailPage extends BasePage {
 
 
 	// Methods:
-	private static By inboxMessageWithSubjectLocator(String subject){
+	private static By inboxMessageWithSubjectLocator(String subject) {
 		return By.xpath(String.format(INBOX_MESSAGE_WITH_SUBJECT_PATTERN, subject));
 	}
 
-	private static By modalWindowWithTextLocator(String text){
+	private static By modalWindowWithTextLocator(String text) {
 		return By.xpath(String.format(MODAL_WINDOW_WITH_TEXT_PATTERN, text));
 	}
 
-	private static By buttonWithNameLocator(String name){
+	private static By buttonWithNameLocator(String name) {
 		return By.xpath(String.format(BUTTON_WITH_NAME_PATTERN, name));
 	}
 
@@ -52,7 +52,7 @@ public class MailPage extends BasePage {
 		return new HtmlElement(modalWindowWithTextLocator(text));
 	}
 
-	public static HtmlElement getMessageSentNotification(){
+	public static HtmlElement getMessageSentNotification() {
 		return new HtmlElement(MESSAGE_SENT_LOCATOR);
 	}
 
@@ -76,23 +76,43 @@ public class MailPage extends BasePage {
 		return new HtmlElement(LOADED_ON_DICK_IFRAME_LOCATOR);
 	}
 
-	public static HtmlElement getPopupTitle() { return new HtmlElement(POPUP_TITLE_LOCATOR); }
+	public static HtmlElement getPopupTitle() {
+		return new HtmlElement(POPUP_TITLE_LOCATOR);
+	}
 
-	public static Button getMailButton(){ return new Button(MAIL_BUTTON_LOCATOR); }
+	public static Button getMailButton() {
+		return new Button(MAIL_BUTTON_LOCATOR);
+	}
 
-	public static Button getSendButton(){ return new Button(SEND_BUTTON_LOCATOR); }
+	public static Button getSendButton() {
+		return new Button(SEND_BUTTON_LOCATOR);
+	}
 
-	public static Button getGoToDiskButton(){ return new Button(GO_TO_DISK_BUTTON_LOCATOR); }
+	public static Button getGoToDiskButton() {
+		return new Button(GO_TO_DISK_BUTTON_LOCATOR);
+	}
 
-	public static Button getSaveOnDiskButton(){ return new Button(SAVE_ON_DISK_BUTTON_LOCATOR); }
+	public static Button getSaveOnDiskButton() {
+		return new Button(SAVE_ON_DISK_BUTTON_LOCATOR);
+	}
 
-	public static Button getCheckMailboxButton(){ return new Button(CHECK_MAILBOX_BUTTON_LOCATOR); }
+	public static Button getCheckMailboxButton() {
+		return new Button(CHECK_MAILBOX_BUTTON_LOCATOR);
+	}
 
-	public static Input getToField() { return new Input(TO_FIELD_LOCATOR); }
+	public static Input getToField() {
+		return new Input(TO_FIELD_LOCATOR);
+	}
 
-	public static Input getSubjectField() { return new Input(SUBJECT_FIELD_LOCATOR); }
+	public static Input getSubjectField() {
+		return new Input(SUBJECT_FIELD_LOCATOR);
+	}
 
-	public static Input getTextBox() { return new Input(TEXTBOX_LOCATOR); }
+	public static Input getTextBox() {
+		return new Input(TEXTBOX_LOCATOR);
+	}
 
-	public static Input getInputFile() { return new Input(INPUT_FILE_LOCATOR); }
+	public static Input getInputFile() {
+		return new Input(INPUT_FILE_LOCATOR);
+	}
 }

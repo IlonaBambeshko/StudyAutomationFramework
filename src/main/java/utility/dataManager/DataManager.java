@@ -28,7 +28,7 @@ public class DataManager {
 	}
 
 	@Step("Get property with test data")
-	public static Properties getPropertyForTest(){
+	public static Properties getPropertyForTest() {
 		try {
 			return ReadDataFromPropertiesFile.createNewPropertyForTest();
 		} catch (Exception e) {
@@ -41,7 +41,7 @@ public class DataManager {
 		return randomUUID().toString().replaceAll("-", "").substring(0, 5);
 	}
 
-	 static class ReadDataFromPropertiesFile {
+	static class ReadDataFromPropertiesFile {
 		public static Properties createNewPropertyForTest() throws Exception {
 			FileInputStream fis = new FileInputStream("/home/user/StudyAutomationFramework/config.properties");
 			Properties prop = new Properties();

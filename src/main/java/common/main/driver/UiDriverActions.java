@@ -31,8 +31,7 @@ public class UiDriverActions {
 		UiDriver.getDriver().switchTo().window(newTabs.stream().findFirst().get().toString());
 	}
 
-	public static Set getCurrentTabs(){
-//		Set<String> currentTabs = new HashSet<>(UiDriver.getDriver().getWindowHandles());
+	public static Set getCurrentTabs() {
 		return new HashSet<>(UiDriver.getDriver().getWindowHandles());
 	}
 

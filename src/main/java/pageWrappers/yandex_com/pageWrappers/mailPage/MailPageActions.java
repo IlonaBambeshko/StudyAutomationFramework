@@ -62,7 +62,7 @@ public class MailPageActions extends BasePageActions {
 		MailPage.getTextBox().sendKeys(text);
 		MailPage.getInputFile().sendKeys(attachmentPath);
 		Waiter.waitUntilVisible(MailPage.getAttachmentField(), "Attachment field is not displayed");
-		Assert.assertEquals(MailPage.getAttachmentField().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")), true);
+		Assert.assertTrue(MailPage.getAttachmentField().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")));
 	}
 
 	@Step("Move attachment from mail to disk")
@@ -72,7 +72,7 @@ public class MailPageActions extends BasePageActions {
 			BasePageActions.clickOnElement(MailPage.getFirstInboxMessageWithSubject("test subject").getElement());
 			Waiter.waitLongUntilVisible(MailPage.getAttachmentField(), "Attachment field is not displayed");
 		}
-		Assert.assertEquals(MailPage.getAttachmentField().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")), true);
+		Assert.assertTrue(MailPage.getAttachmentField().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")));
 		CustomJavascriptExecutor.executeClick(MailPage.getSaveOnDiskButton().getElement());
 	}
 

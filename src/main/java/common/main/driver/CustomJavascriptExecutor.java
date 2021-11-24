@@ -1,4 +1,4 @@
-package utility.javascriptExecutor;
+package common.main.driver;
 
 
 import org.openqa.selenium.JavascriptExecutor;

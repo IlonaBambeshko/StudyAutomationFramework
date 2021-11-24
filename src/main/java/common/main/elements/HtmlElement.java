@@ -13,11 +13,11 @@ public class HtmlElement implements WebElement {
 	}
 
 	public WebElement getElement() {
-		int attempts = 10;
-		while (attempts != 0) {
+		int attempts = 15;
+		while (attempts > 0) {
 			try {
 				return UiDriver.getDriver().findElement(locator);
-			} catch (NoSuchElementException e) {
+			} catch (NoSuchElementException | StaleElementReferenceException | NullPointerException e) {
 				attempts -= 1;
 			}
 		}
@@ -28,19 +28,16 @@ public class HtmlElement implements WebElement {
 		return locator;
 	}
 
-	//	public void waitForElement(By by){
-//		int attempts = 10;
-//		while (attempts != 0) {
-//			try {
-//				UiDriver.getDriver().findElement(locator);
-//			} catch (NoSuchElementException e) {
-//				attempts -= 1;
-//			}
-//		}
-//	}
-
 	public void click() {
-		getElement().click();
+		int attempts = 10;
+		while (attempts > 0) {
+			try {
+				getElement().click();
+				return;
+			} catch (NullPointerException | WebDriverException e) {
+				attempts -= 1;
+			}
+		}
 	}
 
 	@Override

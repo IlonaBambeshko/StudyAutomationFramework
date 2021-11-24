@@ -20,36 +20,24 @@ public class MailPage extends BasePage {
 	private static final By ATTACHMENT_FIELD_LOCATOR = By.xpath("//div[@class='AttachmentItem__text--24wwt qa-Attachment-fileName']/span");
 	private static final By CHECK_MAILBOX_BUTTON_LOCATOR = By.xpath("//span[@data-click-action='mailbox.check']");
 	private static final By SAVE_ON_DISK_BUTTON_LOCATOR = By.xpath("//button[contains(@class, 'qa-MessageViewer-Attachment-SaveDiskBtn')]");
-	private static final By LOADED_ON_DICK_IFRAME_LOCATOR = By.xpath("//span/span/span[contains(., 'Сохранено на Диск')]");
+	private static final By LOADED_ON_DICK_IFRAME_LOCATOR = By.xpath("//span/span/span");
 	private static final By GO_TO_DISK_BUTTON_LOCATOR = By.xpath("//a//span[@class='button__text']");
 	private static final By FRAME_LOCATOR = By.xpath("//iframe[@class='disk-widget-save']");
-	private static final By MESSAGE_SENT_LOCATOR = By.xpath("//div[@class='mail-StatuslineProgress_Message']/span[contains(., 'Письмо отправлено')]");
+	private static final By MESSAGE_SENT_LOCATOR = By.xpath("//div[@class='mail-StatuslineProgress_Message']/span");
 
 	// Patterns:
-	private static final String MODAL_WINDOW_WITH_TEXT_PATTERN = "//div[@class='ComposeConfirmPopup-Title']//span[contains(., '%s')]";
+	private static final String MODAL_WINDOW_WITH_TEXT_PATTERN = "//div[@class='ComposeConfirmPopup-Title'][contains(span, '%s')]";
 	private static final String INBOX_MESSAGE_WITH_SUBJECT_PATTERN = "//div[contains(@class, 'ns-view-messages-item-wrap')]//div[@class='mail-MessageSnippet-Content']//span[@title='%s']";
 	private static final String BUTTON_WITH_NAME_PATTERN = "//span[contains(., '%s')]/../../button";
 
 
 	// Methods:
-	private static By inboxMessageWithSubjectLocator(String subject) {
-		return By.xpath(String.format(INBOX_MESSAGE_WITH_SUBJECT_PATTERN, subject));
-	}
-
-	private static By modalWindowWithTextLocator(String text) {
-		return By.xpath(String.format(MODAL_WINDOW_WITH_TEXT_PATTERN, text));
-	}
-
-	private static By buttonWithNameLocator(String name) {
-		return By.xpath(String.format(BUTTON_WITH_NAME_PATTERN, name));
-	}
-
 	public static HtmlElement getFirstInboxMessageWithSubject(String subject) {
-		return new HtmlElement(inboxMessageWithSubjectLocator(subject));
+		return new HtmlElement(By.xpath(String.format(INBOX_MESSAGE_WITH_SUBJECT_PATTERN, subject)));
 	}
 
 	public static HtmlElement getModalWindowWithText(String text) {
-		return new HtmlElement(modalWindowWithTextLocator(text));
+		return new HtmlElement(By.xpath(String.format(MODAL_WINDOW_WITH_TEXT_PATTERN, text)));
 	}
 
 	public static HtmlElement getMessageSentNotification() {
@@ -57,7 +45,7 @@ public class MailPage extends BasePage {
 	}
 
 	public static Button getButtonWithName(String name) {
-		return new Button(buttonWithNameLocator(name));
+		return new Button(By.xpath(String.format(BUTTON_WITH_NAME_PATTERN, name)));
 	}
 
 	public static HtmlElement getFrame() {

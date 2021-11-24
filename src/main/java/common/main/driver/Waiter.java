@@ -1,21 +1,19 @@
-package utility.waiter;
+package common.main.driver;
 
 import common.main.driver.UiDriver;
 import common.main.elements.HtmlElement;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
 public class Waiter {
-	private static int defaultWaitTimeInSeconds = 10;
-	private static int longWaitTimeInSeconds = 20;
+	private static int defaultWaitTimeInSeconds = TIMEOUT.TEN_SEC.seconds;
+	private static int longWaitTimeInSeconds = TIMEOUT.TWENTY_SEC.seconds;
 
-	public Waiter(int defaultTimeout, int longTimeout) {
-		defaultWaitTimeInSeconds = defaultTimeout;
-		longWaitTimeInSeconds = longTimeout;
+	public Waiter(TIMEOUT defaultTimeout, TIMEOUT longTimeout) {
+		defaultWaitTimeInSeconds = defaultTimeout.seconds;
+		longWaitTimeInSeconds = longTimeout.seconds;
 	}
 
 	public Waiter() {
@@ -53,13 +51,21 @@ public class Waiter {
 		}
 	}
 
-	public static HtmlElement fluentWaitOfDisplayedElement(HtmlElement element) {
-		FluentWait wait = new FluentWait(UiDriver.getDriver());
-		wait.withTimeout(Duration.ofSeconds(18));
-		wait.pollingEvery(Duration.ofSeconds(10));
-		wait.ignoring(NoSuchElementException.class);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(element.getLocator()));
-		return element;
+	public enum TIMEOUT {
+		FIVE_SEC(5),
+		EIGHT_SEC(8),
+		TEN_SEC(10),
+		TWENTY_SEC(20);
+
+		int seconds;
+
+		TIMEOUT(int seconds) {
+			this.seconds = seconds;
+		}
+
+		public int getSeconds() {
+			return seconds;
+		}
 	}
 
 }

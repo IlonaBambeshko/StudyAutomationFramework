@@ -11,6 +11,8 @@ public class LoginPage extends BasePage {
 	private static final By USERNAME_FIELD_LOCATOR = By.id("passp-field-login");
 	private static final By PASSWORD_FIELD_LOCATOR = By.id("passp-field-passwd");
 	private static final By SIGN_IN_BUTTON_LOCATOR = By.id("passp:sign-in");
+	private static final String FILLED_PASSWORD_FIELD_PATTERN = "//input[@value='%s']";
+
 
 	// Methods:
 	public static Input getUserNameField() {
@@ -19,6 +21,10 @@ public class LoginPage extends BasePage {
 
 	public static Input getPasswordsField() {
 		return new Input(PASSWORD_FIELD_LOCATOR);
+	}
+
+	public static Input getFilledPasswordField(String pswd) {
+		return new Input(By.xpath(String.format(FILLED_PASSWORD_FIELD_PATTERN, pswd)));
 	}
 
 	public static Button getSignInButton() {

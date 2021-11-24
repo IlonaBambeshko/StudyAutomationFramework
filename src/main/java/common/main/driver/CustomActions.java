@@ -1,35 +1,23 @@
-package utility.actionsBuilder;
+package common.main.driver;
 
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import static common.main.driver.UiDriver.getDriver;
+public class CustomActions {
 
-public class ActionsBuilder {
-	private static Actions actionsBuilder;
-
-	public static Actions getActionsBuilder() {
-		if (actionsBuilder == null){
-			actionsBuilder = new Actions(getDriver());
-		}
-		return actionsBuilder;
+	public CustomActions() {
 	}
 
-	private ActionsBuilder() {
-		Actions actionsBuilder = new Actions(getDriver());
-		this.actionsBuilder = actionsBuilder;
-	}
-
-	public static void moveToElementAndClick(WebElement element){
-		getActionsBuilder().moveToElement(element).click();
+	public static void moveToElement(WebElement element){
+		new Actions(UiDriver.getDriver()).moveToElement(element).perform();
 	}
 
 	public static void rightClick(WebElement element){
 		boolean staleElement = true;
 		while (staleElement) {
 			try{
-				getActionsBuilder().moveToElement(element)
+				new Actions(UiDriver.getDriver()).moveToElement(element)
 						.contextClick(element)
 						.build()
 						.perform();
@@ -41,7 +29,7 @@ public class ActionsBuilder {
 	}
 
 	public static void dragAndDropAction(WebElement targetElement, WebElement toElement) {
-		getActionsBuilder().clickAndHold(targetElement)
+		new Actions(UiDriver.getDriver()).clickAndHold(targetElement)
 				.moveToElement(toElement)
 				.release(toElement)
 				.build()
@@ -49,7 +37,7 @@ public class ActionsBuilder {
 	}
 
 	public static void doubleClick(WebElement targetElement){
-		getActionsBuilder().moveToElement(targetElement)
+		new Actions(UiDriver.getDriver()).moveToElement(targetElement)
 				.doubleClick()
 				.build()
 				.perform();

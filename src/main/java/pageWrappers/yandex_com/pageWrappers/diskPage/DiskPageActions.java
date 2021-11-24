@@ -1,7 +1,7 @@
 package pageWrappers.yandex_com.pageWrappers.diskPage;
 
-import utility.actionsBuilder.ActionsBuilder;
-import utility.waiter.Waiter;
+import common.main.driver.CustomActions;
+import common.main.driver.Waiter;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriverException;
 import org.testng.Assert;
@@ -12,8 +12,10 @@ public class DiskPageActions extends BasePageActions {
 	@Step("Move item from Downloads to Files")
 	public static void moveItemToFilesFolder(String fileNameWithExtension) {
 		Waiter.waitUntilVisible(DiskPage.getLoadedItem(), "Loaded item is not displayed");
-		Assert.assertTrue(DiskPage.getLoadedItem().getElement().getText().contains(fileNameWithExtension.replace(".txt", "")));
-		ActionsBuilder.rightClick(DiskPage.getFileInDownloads(fileNameWithExtension.replace(".txt", "")).getElement());
+		String fileName = fileNameWithExtension.replace(".txt", "");
+		Assert.assertTrue(DiskPage.getLoadedItem().getElement().getText().contains(fileName),
+				"Attachment name doesn't contain text " + fileName);
+		CustomActions.rightClick(DiskPage.getFileInDownloads(fileNameWithExtension.replace(".txt", "")).getElement());
 		chooseMoveInContextMenu();
 		clickMoveButtonOnModalWindow();
 		Waiter.waitLongUntilVisible(DiskPage.getNotificationAboutMovedFile(fileNameWithExtension), "File hasn't been replaced");
@@ -24,12 +26,12 @@ public class DiskPageActions extends BasePageActions {
 		DiskPage.getFilesInNavigationMenu().click();
 		Waiter.waitUntilVisible((DiskPage.getItemInBasket(
 				fileNameWithExtension.replace(".txt", ""))), "Element is not displayed");
-		ActionsBuilder.dragAndDropAction(
+		CustomActions.dragAndDropAction(
 				DiskPage.getItemInBasket(fileNameWithExtension.replace(".txt", "")).getElement(),
 				DiskPage.getBasket().getElement());
 		Waiter.waitLongUntilVisible(DiskPage.getNotificationAboutMovedFile(
 				fileNameWithExtension), "File hasn't been deleted");
-		ActionsBuilder.doubleClick(DiskPage.getBasket().getElement());
+		CustomActions.doubleClick(DiskPage.getBasket().getElement());
 	}
 
 	@Step("Choose 'Move' in context menu")

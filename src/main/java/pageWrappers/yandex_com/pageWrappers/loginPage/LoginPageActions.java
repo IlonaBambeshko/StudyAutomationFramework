@@ -1,6 +1,6 @@
 package pageWrappers.yandex_com.pageWrappers.loginPage;
 
-import utility.waiter.Waiter;
+import common.main.driver.Waiter;
 import io.qameta.allure.Step;
 import pageWrappers.yandex_com.BasePageActions;
 import pageWrappers.yandex_com.pageWrappers.mailPage.MailPage;
@@ -18,6 +18,8 @@ public class LoginPageActions extends BasePageActions {
 	public static void fillPassword(String password) {
 		Waiter.waitUntilVisible(LoginPage.getPasswordsField(), "Password field is not displayed");
 		LoginPage.getPasswordsField().sendKeys(password);
+		Waiter.waitLongUntilVisible(LoginPage.getFilledPasswordField(password), "Password field hasn't been filled");
+		Waiter.waitUntilVisible(LoginPage.getSignInButton(), "Sign in button is not displayed");
 		clickSignIn();
 	}
 

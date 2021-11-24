@@ -2,7 +2,6 @@ package common.main.driver;
 
 import utility.logerator.Logger;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class UiDriverActions {
@@ -24,15 +23,16 @@ public class UiDriverActions {
 		UiDriver.getDriver().navigate().refresh();
 	}
 
-	public static void switchToTheNextTab(Set previousTabs) {
-		Logger.getLogger().info("Switching to {} tab");
-		Set newTabs = UiDriverActions.getCurrentTabs();
+	public static void switchToTheNextTab(Set<String> previousTabs) {
+		Set<String> newTabs = UiDriverActions.getCurrentTabs();
 		newTabs.removeAll(previousTabs);
-		UiDriver.getDriver().switchTo().window(newTabs.stream().findFirst().get().toString());
+		String newTabName = newTabs.stream().findFirst().get();
+		UiDriver.getDriver().switchTo().window(newTabName);
+		Logger.getLogger().info("Switching to {} tab", newTabName);
 	}
 
-	public static Set getCurrentTabs() {
-		return new HashSet<>(UiDriver.getDriver().getWindowHandles());
+	public static Set<String> getCurrentTabs() {
+		return UiDriver.getDriver().getWindowHandles();
 	}
 
 }
